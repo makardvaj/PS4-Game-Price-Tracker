@@ -19,3 +19,15 @@ def trackAmazonINPrice(url):
 
 # print(trackAmazonINPrice(myurl))
 # print(trackAmazonINPrice(url2))
+
+def trackGameNationPrice(url):
+  headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, lick Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0'}
+  response = requests.get(url, headers = headers)
+  content = response.content
+  soup = BeautifulSoup(content, features = 'html5lib')
+  productPrice = str(soup.find('span', id="ProductPrice").text)
+  return float(productPrice)
+
+# DRIVER CODE
+# myurl = "https://gamenation.in/Products/Games/Assassin's-Creed-Odyssey?Age=PreOwned&a=16&b=19"
+# print(trackGameNationPrice(myurl))
