@@ -26,9 +26,12 @@ def trackGameLootPrice(url):
   response = requests.get(url, headers = headers)
   content = response.content
   soup = BeautifulSoup(content, features = 'html5lib')
-  productPrice = str(soup.find('span', attrs="woocommerce-Price-amount amount").text)
+  container = soup.find('span', attrs = {'class' : "woocommerce-Price-amount amount"})
+  productPrice = str(container.text)
   productPrice = ''.join(char for char in productPrice if char.isdigit())
-  return (float(productPrice))
+  container = soup.find('div', attrs = {'class' : "summary entry-summary"})
+  paragraphs = [paragraph.text for paragraph in container.find_all('p')]
+  return (float(productPrice), 'SOLD OUT' in paragraphs)
 
 # DRIVER CODE
 # myurl = "https://www.amazon.in/Peter-Greats-African-Experiments-Prose/dp/1681375990/?_encoding=UTF8&pd_rd_w=8N2xE&content-id=amzn1.sym.f8b2fc0c-779f-43a6-b25a-069849dd23a6%3Aamzn1.symc.fc11ad14-99c1-406b-aa77-051d0ba1aade&pf_rd_p=f8b2fc0c-779f-43a6-b25a-069849dd23a6&pf_rd_r=0S2ME6X11DH65T3YK0V1&pd_rd_wg=89pdj&pd_rd_r=f8e0a608-bbf1-4dfd-a090-a0852cd9f00c&ref_=pd_hp_d_atf_ci_mcx_mr_ca_hp_atf_d"
@@ -42,3 +45,10 @@ def trackGameLootPrice(url):
 
 # url = "https://gameloot.in/shop/life-is-strange-before-the-storm-ps4-pre-owned/"
 # print(trackGameLootPrice(url)) 
+
+# url = "https://gameloot.in/shop/life-is-strange-before-the-storm-ps4-pre-owned/"
+# ulr = "https://gameloot.in/shop/elden-ring-ps4-pre-owned/"
+# print(trackGameLootPrice(url))
+# print(trackGameLootPrice(ulr))
+# > (699.0, True)
+# > (3199.0, False)
