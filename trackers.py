@@ -19,7 +19,8 @@ def trackGameNationPrice(url):
   content = response.content
   soup = BeautifulSoup(content, features = 'html5lib')
   productPrice = str(soup.find('span', id="ProductPrice").text)
-  return float(productPrice)
+  soldOut = str(soup.find('span', attrs = {"class" : "text-danger"}).text) == "Out Of Stock"
+  return (float(productPrice), soldOut)
 
 def trackGameLootPrice(url):
   headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, lick Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0'}
